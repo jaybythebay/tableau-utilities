@@ -376,6 +376,7 @@ def generate_config(args, server=None):
         print(
             f'GETTING DATASOURCE ID: {datasource_id}, NAME: {datasource_name}, PROJECT NAME: {project_name}, INCLUDE EXTRACT false')
 
+    # metadata_record_columns = None
     metadata_record_columns = get_metadata_record_columns(datasource_name, datasource_path, debugging_logs)
 
     definitions_mapping = None

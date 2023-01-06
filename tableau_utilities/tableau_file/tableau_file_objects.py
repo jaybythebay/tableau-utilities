@@ -753,6 +753,8 @@ class ParentConnection(TableauFileObject):
     cols: TableauFileObjects[MappingCol] = None
     refresh: Refresh = None
     metadata_records: TableauFileObjects[MetadataRecord] = None
+    default_settings: str = None
+    refresh_event: str = None
 
     def __post_init__(self):
         if self.refresh is not None:
@@ -851,6 +853,7 @@ class Extract(TableauFileObject):
 
     def __post_init__(self):
         if self.connection is not None:
+            print("i think I'm in this part and erroring")
             self.connection = ParentConnection(**transform_tableau_object(self.connection))
 
     def dict(self):
