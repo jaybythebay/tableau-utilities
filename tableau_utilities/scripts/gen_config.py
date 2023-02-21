@@ -145,9 +145,13 @@ def create_column_config(columns, datasource_name, folder_mapping, metadata_reco
 
         # Skip internal object columns
         if column_name.startswith('__tableau_internal_object_id__'):
+            if debugging_logs:
+                print(f'Skipping {column_name}: starts with __tableau_internal_object_id__ ')
             continue
         # Skip columns with the 'table' datatype for now
-        if column.datatype != 'table':
+        if column.datatype == 'table':
+            if debugging_logs:
+                print(f'Skipping {column_name}: column.datatype == "table" ')
             continue
 
         # Keeps a list of column names from the column object.
@@ -213,7 +217,7 @@ def create_column_config(columns, datasource_name, folder_mapping, metadata_reco
 
         caption = k.replace('_', ' ').title()
 
-        if v['persona'] in ['string_dimension', 'date_dimension', 'datetime_dimension', 'boolean_dimension']:
+        if v['persona']:
             column_config[caption] = {
                 "description": '',
                 "folder": None,
@@ -221,11 +225,18 @@ def create_column_config(columns, datasource_name, folder_mapping, metadata_reco
                 "datasources": v['datasources']
             }
 
-        if debugging_logs:
-            print('-' * 30)
-            print('METADATA RECORD COLUMN ADDED')
-            print(caption)
-            print(column_config[caption])
+            if debugging_logs:
+                print('-' * 30)
+                print('METADATA RECORD COLUMN ADDED')
+                print(caption)
+                print(v['persona'])
+                print(column_config[caption])
+        else:
+            if debugging_logs:
+                print('-' * 30)
+                print('METADATA RECORD COLUMN SKIPPED - Missing persona')
+                print(caption)
+                print(k, ':', v)
 
     return column_config, calculated_column_configs
 
@@ -287,7 +298,7 @@ def generate_config(args, server: TableauServer = None):
     )
 
     # Get the mapping of definitions from the csv
-    definitions_mapping = None
+    definitions_mapping = dict()
     if definitions_csv_path is not None:
         definitions_mapping = load_csv_with_definitions(file=definitions_csv_path)
 
