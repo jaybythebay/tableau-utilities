@@ -9,7 +9,7 @@ def server_info(args, server):
     """ Prints information for datasources, projects, or workbooks
 
     Args:
-        args: The args from the CLU
+        args: The args from the CLI
         server (TableauServer): the Tableau Server authentication object
 
     """
