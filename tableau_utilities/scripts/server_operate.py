@@ -18,11 +18,12 @@ def server_operate(args, server):
     object_id = args.id
     object_name = args.name
     project_name = args.project_name
+    all_objects = args.all
 
     if object_type not in ['workbook', 'datasource']:
         raise Exception('Please provide object_type as either "workbook" or "datasource"')
 
-    if args.all and action_type == 'download':
+    if all_objects and action_type == 'download':
         object_list = [o for o in getattr(server, f'get_{object_type}s')()]
         for o in object_list:
             print(f"DOWNLOADING {object_type}: {o.name} {o.project_name} {o.id}")
