@@ -68,6 +68,7 @@ def get_metadata_record_config(metadata_records, datasource_name, debugging_logs
 
     for m in metadata_records:
         if m.class_name == 'column':
+            local_name = m.local_name[1:-1]
             persona = ''
             # I think it's low risk to assume these data types are all dimensions
             if m.local_type == 'string':
@@ -84,12 +85,12 @@ def get_metadata_record_config(metadata_records, datasource_name, debugging_logs
             elif m.local_type == 'real':
                 persona = 'discrete_decimal_dimension'
 
-            metadata_record_columns[m.remote_name] = {
+            metadata_record_columns[local_name] = {
                 'persona': persona,
                 "datasources": [
                     {
                         "name": datasource_name,
-                        "local-name": m.local_name[1:-1],
+                        "local-name": local_name,
                         "sql_alias": m.remote_name
                     },
                 ]
@@ -98,8 +99,8 @@ def get_metadata_record_config(metadata_records, datasource_name, debugging_logs
             if debugging_logs:
                 print(m)
                 print(persona)
-                print(m.remote_name)
-                print(metadata_record_columns[m.remote_name])
+                print(local_name, ':', m.remote_name)
+                print(metadata_record_columns[local_name])
 
     return metadata_record_columns
 

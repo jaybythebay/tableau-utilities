@@ -168,7 +168,7 @@ Write the config to a csv with 1 row per field per datasource
 #### merge_config
 Merge a new config into your main config
 ```commandline
-tableau_utilities merge_config --merge_with csv config --existing_config /code/tableau-utilities/tmp_tdsx_and_config/main__column_config.json --additional_config /code/tableau-utilities/tmp_tdsx_and_config/new__column_config.json -merged_config code/dbt-repo/tableau_datasource_configs/column_config
+tableau_utilities merge_config --merge_with config --existing_config /code/tableau-utilities/tmp_tdsx_and_config/main__column_config.json --additional_config /code/tableau-utilities/tmp_tdsx_and_config/new__column_config.json --merged_config code/dbt-repo/tableau_datasource_configs/column_config
 ```
 
 Merge data defintions from a csv into your main config
