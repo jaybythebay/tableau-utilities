@@ -136,26 +136,28 @@ def connection(args, server=None):
     """
 
     # Set Args
-    datasource_id = args.id if args.id else server.get_datasource(
-        datasource_name=args.name, datasource_project=args.project_name
-    ).id
+    datasource_id = args.id
     debugging_logs = args.debugging_logs
     datasource_path = args.file_path
     settings_yaml = args.settings_path
+    connection_operation = args.connection_operation
 
     # Set the connection settings dictionary
     conn_settings = connection_settings(args, debugging_logs, settings_yaml)
 
-    if args.connection_operation == 'update_local_connection':
+    if connection_operation == 'update_local_connection':
         print('Local Datasource, Updating Connection')
         datasource = Datasource(datasource_path)
         update_connection(datasource, conn_settings, debugging_logs)
 
-    elif args.connection_operation == 'embed_user_pass':
+    elif connection_operation == 'embed_user_pass':
         print('Online Datasource, Updating Embedded Username and Password')
 
         if debugging_logs:
             print(f'EMBEDDING CREDS FOR DATASOURCE ID: {datasource_id}')
+
+        if datasource_id is None:
+            datasource_id = server.get_datasource(datasource_name=args.name, datasource_project=args.project_name).id
 
         embed_credential_online(datasource_id, conn_settings, server, debugging_logs)
 

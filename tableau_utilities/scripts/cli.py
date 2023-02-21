@@ -96,9 +96,9 @@ parser_server_info.set_defaults(func=server_info)
 parser_server_operate = subparsers.add_parser('server_operate',
                                               help='Download, publish, and refresh objects on Tableau Cloud/Server')
 parser_server_operate.add_argument('--action_type', choices=['download', 'publish', 'refresh'], required=True,
-                                   help='List information about the Object')
+                                   help='The action to take on the object')
 parser_server_operate.add_argument('--object_type', choices=['datasource', 'workbook'], required=True,
-                                   help='List information about the Object')
+                                   help='The type of object to interact with.')
 parser_server_operate.add_argument('--all',  action='store_true', help='Download all workbooks or datasources')
 parser_server_operate.set_defaults(func=server_operate)
 
@@ -352,12 +352,12 @@ def main():
     )
 
     if needs_tableau_server:
-        print("Tableau Server Operations")
+        print("LOCAL OR SERVER: Tableau Server Operations")
         server = tableau_authentication(args)
         args.func(args, server)
     # Run functions that don't need the server
     else:
-        print('Local Operations')
+        print('LOCAL OR SERVER: Local Operations')
         args.func(args)
 
 
