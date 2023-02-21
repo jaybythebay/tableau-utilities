@@ -182,8 +182,7 @@ def create_column_config(columns, datasource_name, folder_mapping, metadata_reco
             "datasources": [
                 {
                     "name": datasource_name,
-                    "local-name": column_name,
-                    "sql_alias": column_name
+                    "local-name": column_name
                 },
             ]
         }
@@ -205,7 +204,12 @@ def create_column_config(columns, datasource_name, folder_mapping, metadata_reco
                 print('CALCULATED COLUMN CONFIG FIELD')
                 print(calculated_column_configs[caption])
         else:
+            if column_name in metadata_record_columns:
+                sql_alias = metadata_record_columns[column_name]['datasources'][0]['sql_alias']
+            else:
+                sql_alias = column_name
             column_config[caption] = column_dict
+            column_config[caption]['datasources'][0]['sql_alias'] = sql_alias
             if debugging_logs:
                 print('COLUMN CONFIG FIELD')
                 print(column_config[caption])
