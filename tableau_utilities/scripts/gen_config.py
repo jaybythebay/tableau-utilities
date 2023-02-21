@@ -216,7 +216,7 @@ def create_column_config(columns, datasource_name, folder_mapping, metadata_reco
         if k in column_name_list:
             continue
 
-        caption = k.replace('_', ' ').title()
+        caption = v['datasources'][0]['sql_alias'].replace('_', ' ').title()
 
         if v['persona']:
             column_config[caption] = {
