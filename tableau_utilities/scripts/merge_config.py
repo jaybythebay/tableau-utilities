@@ -1,4 +1,5 @@
 import json
+import os
 from tableau_utilities.general.cli_styling import Color, Symbol
 from tableau_utilities.scripts.gen_config import load_csv_with_definitions, generate_config
 
@@ -15,6 +16,10 @@ def read_file(file_path):
     Returns:
         dict: The JSON content as a dictionary.
     """
+
+    # # Convert relative path to absolute path
+    # file_path = os.path.abspath(file_path)
+
     try:
         with open(file_path, "r") as infile:
             config = json.load(infile)
@@ -158,6 +163,8 @@ def read_merge_write(existing_config_path, additional_config_path, output_config
     existing_config = read_file(existing_config_path)
     additional_config = read_file(additional_config_path)
 
+    print(existing_config)
+
     # Merge
     new_config = merge_2_configs(existing_config, additional_config, debugging_logs)
 
@@ -229,8 +236,21 @@ def merge_configs(args, server=None):
               f'{COLOR.fg_grey}{new_column_config_path} {SYMBOL.sep} {new_calculated_column_config_path}{COLOR.reset}')
         print(f'{COLOR.fg_yellow}TARGET DIRECTORY {SYMBOL.arrow_r} {COLOR.fg_grey}{target_directory}{COLOR.reset}')
 
-        existing_column_config_path = f'{target_directory}column_config.json'
-        existing_calc_config_path = f'{target_directory}tableau_calc_config.json'
+        # existing_column_config_path = f'{target_directory}column_config.json'
+        # existing_calc_config_path = f'{target_directory}tableau_calc_config.json'
+
+        # Get the current working directory
+        current_working_directory = os.getcwd()
+
+        # Print the full path of the current working directory
+        print(f"Current working directory: {current_working_directory}")
+
+        existing_column_config_path = os.path.join(target_directory, 'column_config.json')
+        existing_calc_config_path = os.path.join(target_directory, 'tableau_calc_config.json')
+
+        print('I am before read_merge_write')
+        print(existing_column_config_path)
+        print(existing_calc_config_path)
 
         read_merge_write(existing_config_path=existing_column_config_path,
                          additional_config_path=new_column_config_path,

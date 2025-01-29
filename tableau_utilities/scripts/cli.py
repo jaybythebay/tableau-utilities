@@ -458,6 +458,9 @@ def main():
     if not os.path.isabs(args.settings_path) and os.path.exists(args.settings_path):
         args.settings_path = os.path.abspath(args.settings_path)
 
+    if args.target_directory and not os.path.isabs(args.target_directory):
+        args.target_directory = os.path.abspath(args.target_directory)
+
     # Set args from connection group, from settings YAML / Environment Variables, when not provided in the command
     set_datasource_connection_args(args)
 
@@ -474,6 +477,8 @@ def main():
         validate_args_command_merge_config(args)
     if args.command == 'apply_configs':
         validate_args_command_apply_configs(args)
+
+    # Make the target directory path absolute to avoid conflicts with the working directory
 
     # Set/Reset the directory
     tmp_folder = args.output_dir
